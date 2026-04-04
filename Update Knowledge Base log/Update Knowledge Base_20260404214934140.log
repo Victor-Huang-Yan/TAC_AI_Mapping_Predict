@@ -1,0 +1,19 @@
+Log generated at: 2026-04-04 21:49:34.141
+================================================================================
+Update Knowledge Base Operation
+================================================================================
+Processing Time:
+  Reading time: 0.5753 seconds
+  Vectorization time: 4.5302 seconds
+  Total processing time: 5.1483 seconds
+
+Data Information:
+  Total records: 426
+  Processed items: 400
+  Error count: 0
+
+Other Information:
+  use_semantic_matching: True
+  model_available: True
+  master_file_path: knowledge_base\A.xlsx
+================================================================================

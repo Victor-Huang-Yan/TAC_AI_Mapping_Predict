@@ -1,0 +1,5 @@
+sentence1,sentence2,score
+PnP Destroy,PnP Scrap,0.9
+PnP Scrap,PnP Disassemble,0.85
+Assembly,Assemble,0.95
+Disassembly,Take apart,0.8

@@ -1,0 +1,16 @@
+### Local API Call URLs
+The local development environment uses localhost as the host with port 5000:
+
+- Semantic Mapping Interface: http://localhost:5000/api/map
+- Health Check Interface: http://localhost:5000/api/health
+- API Documentation Interface: http://localhost:5000/api/docs
+
+### Remote API Call URLs
+The remote deployment environment uses the default configured host api.example.com and port 5000:
+
+- Semantic Mapping Interface: http://{server}:{port}/api/map
+  Sample: https://bernardo-blowiest-persuasively.ngrok-free.dev/api/map
+- Health Check Interface: http://{server}:{port}/api/health
+  Sample: https://bernardo-blowiest-persuasively.ngrok-free.dev/api/health
+- API Documentation Interface: http://{server}:{port}/api/docs
+  Sample: https://bernardo-blowiest-persuasively.ngrok-free.dev/api/docs

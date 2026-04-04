@@ -1,0 +1,27 @@
+{
+  "status": "success",
+  "results": [
+    {
+      "input": {
+        "MATERIAL_NAME": "MATERIAL_A",
+        "SUB_MATERIAL_NAME": "PnP Destroy",
+        "UOM": "EA"
+      },
+      "output": {
+        "TRANSACTION_TYPE": "ADJUSTMENT",
+        "IMLUI_Billable Date": "Column+RECEIPT.EDITDATE",
+        "IMLUI_Billable Qty": "Column+RECEIPTDETAIL.QTYRECEIVED",
+        "IMLUI_Document ID": "Column+RECEIPT.RECEIPTKEY",
+        "Match Type": "AISemanticMapping",
+        "Matched Master SUB_MATERIAL_NAME": "PnP Scrap",
+        "Semantic Score": 85.42,
+        "Fuzzy Score": 60,
+        "Final Combined Score": 80.34
+      }
+    }
+  ],
+  "metadata": {
+    "total_items": 1,
+    "processed_items": 1
+  }
+}

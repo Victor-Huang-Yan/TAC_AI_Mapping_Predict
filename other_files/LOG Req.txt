@@ -1,0 +1,7 @@
+1.帮我为每一次Update Knowledge Base的操作 生成一个log文件保存在 命名为Update Knowledge Base log 的文件夹，命名为Update Knowledge Base_YYYYMMDDHHSSMM.log 其中YYYYMMDDHHSSMM为系统年月日时分秒
+
+log文件里 帮我记录： 读取时间、数据条数 和 master file的 向量化用时，以及其他你认为必要的日志
+
+2.帮我为每一次Upload and Process 的操作 生成一个log文件保存在 命名为Upload and Process log 的文件夹，命名为Upload and Process_YYYYMMDDHHSSMM.log 其中YYYYMMDDHHSSMM为系统年月日时分秒
+
+log文件里 帮我记录： upload的数据的 读取时间、数据条数 ，向量化用时，upload的数据的向量与master file向量的angular相似度，以及其他你认为必要的日志

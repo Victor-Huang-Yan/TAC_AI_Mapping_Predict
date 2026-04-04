@@ -1,0 +1,33 @@
+# Installation command: pip install --only-binary :all: -r requirements.txt
+# Use --only-binary option to avoid compilation issues
+# Note: If --only-binary is not available, use: pip install -r requirements.txt
+
+# Core dependencies
+Flask
+pandas
+openpyxl
+fuzzywuzzy
+sentence-transformers
+numpy
+PyJWT
+Werkzeug
+watchdog
+
+# Optional dependencies for better performance
+python-Levenshtein
+
+# Note: annoy is used for approximate nearest neighbor search
+# IMPORTANT: annoy requires Microsoft Visual C++ 14.0 or higher for compilation on Windows
+# If binary wheels are not available, installation will fail without proper build tools
+# To install on Windows without build tools, use: pip install annoy --only-binary :all:
+# If that fails, the application will automatically fall back to optimized linear search
+
+# Note: sentence-transformers will automatically install required dependencies like:
+# - torch (CPU version by default, GPU version requires separate installation)
+# - transformers
+# - scikit-learn
+# - tqdm
+
+# For GPU acceleration (optional):
+# pip install torch --index-url https://download.pytorch.org/whl/cu118
+# Then modify app.py to use CUDA device when loading the model

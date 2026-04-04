@@ -1,0 +1,35 @@
+Log generated at: 2026-04-04 21:27:33.923
+================================================================================
+Upload and Process Operation
+================================================================================
+Processing Time:
+  Reading time: 0.0498 seconds
+  Vectorization time: 0.3952 seconds
+  Total processing time: 0.4466 seconds
+
+Data Information:
+  Total records: 15
+  Processed items: 15
+
+Matching Information:
+  Exact matches: 8
+  Semantic matches: 7
+  Fuzzy matches: 0
+  No matches: 0
+
+Vector Angular Similarities (Top 10):
+  Rank  | Similarity | Master Sub Material | Import Sub Material
+  ------------------------------------------------------------------------------------------
+     1 | 82.8233 | Picking fee pr. Colli          | Pack fee pr. Colli            
+     2 | 67.8429 | P&P MOMO GWP                   | P&P XYZ                       
+     3 | 76.2269 | PnP Golf Acc                   | PnP football Acc              
+     4 | 70.6888 | PnP Cleaning                   | PnP Destroy                   
+     5 | 69.3795 | PnP Scrap                      | PnP Trash                     
+     6 | 73.7613 | PnP Scrap                      | PnP Discard                   
+     7 | 85.5456 | Case picking                   | Picking per case              
+
+Other Information:
+  use_semantic_matching: True
+  model_available: True
+  ann_index_available: False
+================================================================================

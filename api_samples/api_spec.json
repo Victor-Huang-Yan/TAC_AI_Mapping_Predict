@@ -1,0 +1,440 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TAC Semantic Mapping API",
+    "description": "REST API interface for semantic mapping system, used for intelligently matching transaction data with master dataset",
+    "version": "1.0.0",
+    "contact": {
+      "name": "API Support",
+      "email": "support@example.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Local development environment"
+    },
+    {
+      "url": "http://{server}:{port}",
+      "description": "Deployment server",
+      "variables": {
+        "server": {
+          "default": "api.example.com"
+        },
+        "port": {
+          "default": "5000"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/api/map": {
+      "post": {
+        "summary": "Perform Semantic Mapping",
+        "description": "Perform semantic mapping for multiple items and return best match results",
+        "tags": ["mapping"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MappingRequest"
+              },
+              "examples": {
+                "singleItem": {
+                  "summary": "Single item mapping",
+                  "value": {
+                    "items": [
+                      {
+                        "MATERIAL_NAME": "MATERIAL_A",
+                        "SUB_MATERIAL_NAME": "PnP Destroy",
+                        "UOM": "EA"
+                      }
+                    ]
+                  }
+                },
+                "multipleItems": {
+                  "summary": "Multiple items mapping",
+                  "value": {
+                    "items": [
+                      {
+                        "MATERIAL_NAME": "MATERIAL_A",
+                        "SUB_MATERIAL_NAME": "PnP Destroy",
+                        "UOM": "EA"
+                      },
+                      {
+                        "MATERIAL_NAME": "MATERIAL_B",
+                        "SUB_MATERIAL_NAME": "Assembly",
+                        "UOM": "PC"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mapping successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MappingResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "Mapping success response",
+                    "value": {
+                      "status": "success",
+                      "results": [
+                        {
+                          "input": {
+                            "MATERIAL_NAME": "MATERIAL_A",
+                            "SUB_MATERIAL_NAME": "PnP Destroy",
+                            "UOM": "EA"
+                          },
+                          "output": {
+                            "TRANSACTION_TYPE": "ADJUSTMENT",
+                            "IMLUI_Billable Date": "Column+RECEIPT.EDITDATE",
+                            "IMLUI_Billable Qty": "Column+RECEIPTDETAIL.QTYRECEIVED",
+                            "IMLUI_Document ID": "Column+RECEIPT.RECEIPTKEY",
+                            "Match Type": "AISemanticMapping",
+                            "Matched Master SUB_MATERIAL_NAME": "PnP Scrap",
+                            "Semantic Score": 82.82,
+                            "Fuzzy Score": 86,
+                            "Final Combined Score": 89.88
+                          }
+                        }
+                      ],
+                      "metadata": {
+                        "total_items": 1,
+                        "processed_items": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Check API service status and dependency service availability",
+        "tags": ["system"],
+        "responses": {
+          "200": {
+            "description": "Service healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                },
+                "examples": {
+                  "healthy": {
+                    "summary": "Health status response",
+                    "value": {
+                      "status": "healthy",
+                      "services": {
+                        "semantic_matching": true,
+                        "ann_index": true,
+                        "master_data": true
+                      },
+                      "version": "1.0.0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/docs": {
+      "get": {
+        "summary": "API Documentation",
+        "description": "Get API usage documentation",
+        "tags": ["system"],
+        "responses": {
+          "200": {
+            "description": "API documentation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MappingRequest": {
+        "type": "object",
+        "required": ["items"],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MappingItem"
+            },
+            "minItems": 1,
+            "maxItems": 1000
+          }
+        }
+      },
+      "MappingItem": {
+        "type": "object",
+        "required": ["MATERIAL_NAME", "SUB_MATERIAL_NAME", "UOM"],
+        "properties": {
+          "MATERIAL_NAME": {
+            "type": "string",
+            "description": "Material name",
+            "example": "MATERIAL_A"
+          },
+          "SUB_MATERIAL_NAME": {
+            "type": "string",
+            "description": "Sub-material name",
+            "example": "PnP Destroy"
+          },
+          "UOM": {
+            "type": "string",
+            "description": "Unit of measure",
+            "example": "EA"
+          }
+        }
+      },
+      "MappingResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["success", "error"],
+            "example": "success"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MappingResult"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "MappingResult": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "$ref": "#/components/schemas/MappingItem"
+          },
+          "output": {
+            "$ref": "#/components/schemas/MappingOutput"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "MappingOutput": {
+        "type": "object",
+        "properties": {
+          "TRANSACTION_TYPE": {
+            "type": "string",
+            "description": "Transaction type",
+            "example": "ADJUSTMENT"
+          },
+          "IMLUI_Billable Date": {
+            "type": "string",
+            "description": "Billable date mapping field",
+            "example": "Column+RECEIPT.EDITDATE"
+          },
+          "IMLUI_Billable Qty": {
+            "type": "string",
+            "description": "Billable quantity mapping field",
+            "example": "Column+RECEIPTDETAIL.QTYRECEIVED"
+          },
+          "IMLUI_Document ID": {
+            "type": "string",
+            "description": "Document ID mapping field",
+            "example": "Column+RECEIPT.RECEIPTKEY"
+          },
+          "Match Type": {
+            "type": "string",
+            "enum": ["Exact Match", "AISemanticMapping", "FuzzyMapping", "Unknown"],
+            "example": "AISemanticMapping"
+          },
+          "Matched Master SUB_MATERIAL_NAME": {
+            "type": "string",
+            "description": "Matched master sub-material name",
+            "example": "PnP Scrap"
+          },
+          "Semantic Score": {
+            "oneOf": [
+              {
+                "type": "number",
+                "format": "float",
+                "minimum": 0,
+                "maximum": 100
+              },
+              {
+                "type": "string",
+                "enum": ["-"]
+              }
+            ],
+            "example": 82.82
+          },
+          "Fuzzy Score": {
+            "oneOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              {
+                "type": "string",
+                "enum": ["-"]
+              }
+            ],
+            "example": 86
+          },
+          "Final Combined Score": {
+            "oneOf": [
+              {
+                "type": "number",
+                "format": "float",
+                "minimum": 0,
+                "maximum": 100
+              },
+              {
+                "type": "string",
+                "enum": ["-"]
+              }
+            ],
+            "example": 89.88
+          }
+        }
+      },
+      "Metadata": {
+        "type": "object",
+        "properties": {
+          "total_items": {
+            "type": "integer",
+            "description": "Total items",
+            "example": 1
+          },
+          "processed_items": {
+            "type": "integer",
+            "description": "Processed items",
+            "example": 1
+          }
+        }
+      },
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["healthy", "unhealthy"],
+            "example": "healthy"
+          },
+          "services": {
+            "type": "object",
+            "properties": {
+              "semantic_matching": {
+                "type": "boolean",
+                "example": true
+              },
+              "ann_index": {
+                "type": "boolean",
+                "example": true
+              },
+              "master_data": {
+                "type": "boolean",
+                "example": true
+              }
+            }
+          },
+          "version": {
+            "type": "string",
+            "example": "1.0.0"
+          }
+        }
+      },
+      "DocsResponse": {
+        "type": "object",
+        "properties": {
+          "endpoints": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "request": {
+                  "type": "object"
+                },
+                "response": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Invalid request parameters"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "mapping",
+      "description": "Semantic mapping related interfaces"
+    },
+    {
+      "name": "system",
+      "description": "System related interfaces"
+    }
+  ]
+}
