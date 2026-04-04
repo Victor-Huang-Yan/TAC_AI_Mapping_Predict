@@ -24,10 +24,10 @@ This document provides detailed instructions for deploying TAC Semantic Mapping 
 
 ```bash
 # Clone repository from GitHub
-git clone https://github.com/your-username/tac-semantic-mapping.git
+git clone https://github.com/your-username/TAC_AI_Mapping_Predict.git
 
 # Navigate to the project directory
-cd tac-semantic-mapping
+cd TAC_AI_Mapping_Predict
 ```
 
 ### 2. Create Virtual Environment (Recommended)
