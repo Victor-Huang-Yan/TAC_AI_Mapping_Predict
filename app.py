@@ -1,3 +1,7 @@
+# TAC Semantic Mapping System
+# Copyright (c) 2026 [Victor Yan Huang]
+# Licensed under the MIT License
+
 from flask import Flask, render_template, request, redirect, url_for, send_file, jsonify
 import pandas as pd
 import os
